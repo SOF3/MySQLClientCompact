@@ -1,0 +1,58 @@
+<resources>
+	<string name="Global_AppName">MySQL Client Compact</string>
+	<string name="Global_ShowPassword">Show password</string>
+	<string name="Global_IpPortDelimiter">:</string>
+	<string name="Global_IllegalNumberFormat">Your input value was not a number!</string>
+	<string name="Global_Show">Show</string>
+	<string name="Global_Hide">Hide</string>
+
+	<string name="Home_Menu_Add">Add Server</string>
+
+	<string name="AddServer_Add">Add Server</string>
+	<string name="AddServer_ServerAddress">Address:</string>
+	<string name="AddServer_Hostname_Hint">hostname</string>
+	<string name="AddServer_Port_Default">3306</string>
+	<string name="AddServer_Port_Hint">port number</string>
+	<string name="AddServer_Username">Username:</string>
+	<string name="AddServer_Password">Password:</string>
+	<string name="AddServer_Aborted">Aborted adding server</string>
+	<string name="AddServer_AddressNotResolved">
+		<![CDATA[Warning: The hostname (${1}) is not accessible!]]></string>
+	<string name="AddServer_PortInvalid">Invalid port number; corrected to 3306</string>
+	<string name="AddServer_ServerName">Server Name:</string>
+	<string name="AddServer_ServerName_Hint">custom server name</string>
+	<string name="AddServer_QueryPasswordText">Ask for password every time</string>
+	<string name="AddServer_DefaultSchema">Default schema:</string>
+
+	<string name="QueryCred_Username">"Username: "</string>
+	<string name="QueryCred_Password">"Password: "</string>
+	<string name="QueryCred_Title">Database Credentials</string>
+
+	<string name="ServerMain_TabTitles_Query">Query</string>
+	<string name="ServerMain_TabTitles_Status">Status</string>
+	<string name="ServerMain_TabTitles_Structure">Structure</string>
+
+	<string name="ServerMain_AbortMissingCred">Missing login username or password, login aborted</string>
+
+	<string name="ServerMain_Query_PromptQuery">"Enter MySQL query: "</string>
+	<string name="ServerMain_Query_QueryHint">Enter MySQL query here…</string>
+	<string name="ServerMain_Query_Execute">Execute query</string>
+
+	<string name="ServerMain_Structure_QueryFailure" formatted="false">Failed to query database structure (%s)</string>
+	<string name="ServerMain_Structure_EntryLoading">%s (Loading…)</string>
+	<string name="ServerMain_Structure_Header_Database" formatted="false">Database: %s</string>
+	<string name="ServerMain_Structure_Header_Table" formatted="false">Table: %s</string>
+	<string name="ServerMain_Structure_Header_Schema" formatted="false">Schema: %s</string>
+	<string name="ServerMain_Structure_Header_Database_NoParam" formatted="false">Database</string>
+	<string name="ServerMain_Structure_Header_Table_NoParam" formatted="false">Table</string>
+	<string name="ServerMain_Structure_Header_Schema_NoParam" formatted="false">Schema</string>
+
+	<string name="Connection_CriticalError" formatted="false">Critical error connecting to MySQL database:\n%s</string>
+	<string name="Connection_SuccessfulToast" formatted="false">Connected to %s\@%s:%s successfully</string>
+	<string name="Connection_Disconencted" formatted="false">Disconnected from %s</string>
+
+	<string name="ConnError_UnknownHost" formatted="false">Hostname %s could not be resolved</string>
+	<string name="ConnError_Establish" formatted="false">Could not establish connection to server:\n%s</string>
+	<string name="ConnError_Close" formatted="false">Failed to close MySQL connection:\n%s.</string>
+	<string name="ConnError_Access" formatted="false">Problem accessing database:\n%s</string>
+</resources>
