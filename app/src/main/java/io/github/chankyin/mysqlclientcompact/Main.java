@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import com.mysql.jdbc.Driver;
 import io.github.chankyin.mysqlclientcompact.objects.TranslatedPresentable;
 import lombok.Getter;
 import lombok.Setter;
@@ -41,6 +42,7 @@ public class Main extends Application{
 		try{
 			instance = this;
 			Class.forName("com.mysql.jdbc.Driver");
+			Driver driver;
 		}catch(ClassNotFoundException e){
 			e.printStackTrace();
 		}
