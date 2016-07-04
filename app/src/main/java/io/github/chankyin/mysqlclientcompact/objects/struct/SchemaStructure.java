@@ -5,7 +5,7 @@ import android.view.View;
 import io.github.chankyin.mysqlclientcompact.R;
 import io.github.chankyin.mysqlclientcompact.mysql.ConnectionThread;
 import io.github.chankyin.mysqlclientcompact.mysql.result.ProcessedResult;
-import io.github.chankyin.mysqlclientcompact.serverui.ServerMainActivity;
+import io.github.chankyin.mysqlclientcompact.ui.server.main.ServerMainActivity;
 
 public class SchemaStructure extends Structure<TableStructure, DatabaseStructure> implements ListEntry{
 	public SchemaStructure(DatabaseStructure parent, String name){
@@ -14,7 +14,7 @@ public class SchemaStructure extends Structure<TableStructure, DatabaseStructure
 
 	@Override
 	public void doQuery(final ServerMainActivity activity){
-		activity.getThread().scheduleAsyncQuery("SHOW TABLES IN `" + getName() + "`", new ConnectionThread.QueryResultHandler(){
+		activity.getConnectionThread().scheduleAsyncQuery("SHOW TABLES IN `" + getName() + "`", new ConnectionThread.QueryResultHandler(){
 			@Override
 			public void handle(ProcessedResult result){
 				handleResult(activity, result, new ValueConstructor<TableStructure>(){
@@ -41,7 +41,7 @@ public class SchemaStructure extends Structure<TableStructure, DatabaseStructure
 	@Override
 	@Deprecated
 	public void onFirstDisplay(final ServerMainActivity activity){
-		activity.getThread().scheduleAsyncQuery("SHOW TABLES IN `" + getName() + "`", new ConnectionThread.QueryResultHandler(){
+		activity.getConnectionThread().scheduleAsyncQuery("SHOW TABLES IN `" + getName() + "`", new ConnectionThread.QueryResultHandler(){
 			@Override
 			public void handle(ProcessedResult result){
 				dep_present(activity, "TABLE_NAME", result, new ValueConstructor<TableStructure>(){

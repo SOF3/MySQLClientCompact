@@ -6,12 +6,16 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import io.github.chankyin.mysqlclientcompact.MyApplication;
+import io.github.chankyin.mysqlclientcompact.Main;
 import io.github.chankyin.mysqlclientcompact.R;
-import io.github.chankyin.mysqlclientcompact.mysql.result.*;
-import io.github.chankyin.mysqlclientcompact.serverui.ServerMainActivity;
-import io.github.chankyin.mysqlclientcompact.serverui.ServerMainPage;
-import io.github.chankyin.mysqlclientcompact.serverui.StructureFragment;
+import io.github.chankyin.mysqlclientcompact.mysql.result.ProcessedErrorResult;
+import io.github.chankyin.mysqlclientcompact.mysql.result.ProcessedQueryResult;
+import io.github.chankyin.mysqlclientcompact.mysql.result.ProcessedResult;
+import io.github.chankyin.mysqlclientcompact.objects.result.Row;
+import io.github.chankyin.mysqlclientcompact.objects.result.StringCell;
+import io.github.chankyin.mysqlclientcompact.ui.server.main.ServerMainActivity;
+import io.github.chankyin.mysqlclientcompact.ui.server.main.ServerMainPage;
+import io.github.chankyin.mysqlclientcompact.ui.server.main.StructureFragment;
 import lombok.Getter;
 
 import java.sql.SQLException;
@@ -81,10 +85,13 @@ public abstract class Structure<ValueType extends ListEntry, ParentType>{
 				listView.setAdapter(adapter);
 				listView.setOnItemClickListener(adapter);
 			}
+			if(listView.getParent() instanceof ViewGroup){
+				((ViewGroup) listView.getParent()).removeView(listView);
+			}
 			fragment.getContentView().addView(listView);
 		}else{
-			TextView textView = MyApplication.createTextView(
-					fragment.getActivity(), R.string.ServerMain_Structure_EntryLoading, getName());
+			TextView textView = Main.createTextView(fragment.getActivity(),
+					R.string.ServerMain_Structure_EntryLoading, getName() == null ? "" : getName());
 			textView.setTextSize(fragment.getResources().getDimension(R.dimen.activity_center_word_font));
 			fragment.getContentView().addView(textView);
 		}
@@ -155,23 +162,27 @@ public abstract class Structure<ValueType extends ListEntry, ParentType>{
 			ProcessedQueryResult queryResult = (ProcessedQueryResult) result;
 			List<ValueType> list = new ArrayList<>();
 			for(Row row : queryResult.getValues()){
-				Cell.StringCell cell = (Cell.StringCell) row.findCell(columnName);
+				StringCell cell = (StringCell) row.findCell(columnName);
 				Log.d("DatabaseStructure", cell.getClass().getCanonicalName());
 				ValueType value = constr.create(cell.getValue());
 				list.add(value);
-				value.doQuery(activity);
+				if(value instanceof Structure){
+					((Structure) value).doQuery(activity);
+				}
 			}
 			setContents(list);
 
 			StructureFragment fragment = (StructureFragment) activity.getPage(ServerMainPage.STRUCTURE);
 			assert fragment != null;
-			if(fragment.getDisplayedStructure()==this){
+			if(fragment.getDisplayedStructure() == this){
 				fragment.setDisplayedStructure(this);
 			}
 		}else{
 			throw new AssertionError("Unknown result type: " + result.getQueryType().name());
 		}
 	}
+
+	public abstract void doQuery(ServerMainActivity activity);
 
 	public static interface OnChangeListener<ValueType>{
 
@@ -229,7 +240,7 @@ public abstract class Structure<ValueType extends ListEntry, ParentType>{
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent){
-			TextView textView = MyApplication.createTextView(fragment.getContext(), getItem(position).getName());
+			TextView textView = Main.createTextView(fragment.getContext(), getItem(position).getName());
 			int padding = fragment.getResources().getDimensionPixelOffset(R.dimen.database_structure_entry_padding);
 			textView.setPadding(padding, padding, padding, padding);
 			textView.setTextSize(fragment.getResources().getDimension(R.dimen.database_structure_text_font));
@@ -263,7 +274,7 @@ public abstract class Structure<ValueType extends ListEntry, ParentType>{
 			ProcessedQueryResult queryResult = (ProcessedQueryResult) result;
 			List<ValueType> list = new ArrayList<>();
 			for(Row row : queryResult.getValues()){
-				Cell.StringCell cell = (Cell.StringCell) row.findCell(columnName);
+				StringCell cell = (StringCell) row.findCell(columnName);
 				Log.d("DatabaseStructure", cell.getClass().getCanonicalName());
 				ValueType value = constr.create(cell.getValue());
 				list.add(value);
@@ -281,15 +292,15 @@ public abstract class Structure<ValueType extends ListEntry, ParentType>{
 			return dep_layout;
 		}
 		dep_layout = new LinearLayout(ctx);
-		dep_layout.setLayoutParams(MyApplication.MP_WC);
+		dep_layout.setLayoutParams(Main.MP_WC);
 		dep_layout.setOrientation(LinearLayout.VERTICAL);
 		int padding = ctx.getResources().getDimensionPixelOffset(R.dimen.database_structure_entry_padding);
 		dep_layout.setPadding(padding, padding, padding, padding);
 		if(isContentLoaded()){
 			dep_layout.addView(dep_getListView(ctx));
 		}else{
-			final TextView textView = MyApplication.createTextView(ctx, R.string.ServerMain_Structure_EntryLoading, getName());
-			textView.setLayoutParams(MyApplication.WC_WC);
+			final TextView textView = Main.createTextView(ctx, R.string.ServerMain_Structure_EntryLoading, getName());
+			textView.setLayoutParams(Main.WC_WC);
 			textView.setTextSize(ctx.getResources().getDimension(R.dimen.database_structure_text_font));
 			dep_layout.addView(textView);
 			listeners.add(new ListEntryOnChangeAdaptor(ctx, textView));
@@ -348,7 +359,7 @@ public abstract class Structure<ValueType extends ListEntry, ParentType>{
 			dep_layout.removeView(textView);
 			if(getName() != null){
 				LinearLayout clicker = new LinearLayout(ctx);
-				clicker.setLayoutParams(MyApplication.MP_WC);
+				clicker.setLayoutParams(Main.MP_WC);
 				clicker.setOrientation(LinearLayout.HORIZONTAL);
 				textView.setText(getName());
 				clicker.addView(textView);

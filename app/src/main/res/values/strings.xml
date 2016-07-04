@@ -7,6 +7,11 @@
 	<string name="Global_Hide">Hide</string>
 
 	<string name="Home_Menu_Add">Add Server</string>
+	<string name="Home_Menu_Edit">Edit Server</string>
+	<string-array name="Home_Menu_Actions">
+		<item>Edit</item>
+		<item>Delete</item>
+	</string-array>
 
 	<string name="AddServer_Add">Add Server</string>
 	<string name="AddServer_ServerAddress">Address:</string>
@@ -16,6 +21,7 @@
 	<string name="AddServer_Username">Username:</string>
 	<string name="AddServer_Password">Password:</string>
 	<string name="AddServer_Aborted">Aborted adding server</string>
+	<string name="EditServer_Aborted">Aborted editing server</string>
 	<string name="AddServer_AddressNotResolved">
 		<![CDATA[Warning: The hostname (${1}) is not accessible!]]></string>
 	<string name="AddServer_PortInvalid">Invalid port number; corrected to 3306</string>
@@ -23,6 +29,7 @@
 	<string name="AddServer_ServerName_Hint">custom server name</string>
 	<string name="AddServer_QueryPasswordText">Ask for password every time</string>
 	<string name="AddServer_DefaultSchema">Default schema:</string>
+	<string name="AddServer_DefaultSchema_Hint">Leave empty for no default schema</string>
 
 	<string name="QueryCred_Username">"Username: "</string>
 	<string name="QueryCred_Password">"Password: "</string>
@@ -31,12 +38,25 @@
 	<string name="ServerMain_TabTitles_Query">Query</string>
 	<string name="ServerMain_TabTitles_Status">Status</string>
 	<string name="ServerMain_TabTitles_Structure">Structure</string>
-
 	<string name="ServerMain_AbortMissingCred">Missing login username or password, login aborted</string>
+	<string name="ServerMain_QueryLog_Title">Logs (Click to hide)</string>
+	<string name="ServerMain_QueryLog_Title_Hidden">Logs (Click to show)</string>
+	<string name="ServerMain_QueryLog_Format">[%2$s] %1$s</string>
+	<string name="ServerMain_Menu_RefreshStatus">Refresh Status</string>
+	<string name="ServerMain_Menu_RefreshStructure">Refresh Structure</string>
+
+	<string name="QueryState_Pending">Pending</string>
+	<string name="QueryState_Executing">Executing</string>
+	<string name="QueryState_Completed">Completed</string>
+	<string name="QueryState_Error">Error</string>
 
 	<string name="ServerMain_Query_PromptQuery">"Enter MySQL query: "</string>
 	<string name="ServerMain_Query_QueryHint">Enter MySQL query here…</string>
 	<string name="ServerMain_Query_Execute">Execute query</string>
+	<string name="ServerMain_Query_Execute_Empty">Query is empty!</string>
+	<string name="ServerMain_Query_History">User query history:</string>
+
+	<string name="ServerMain_Status_Loading">Loading…</string>
 
 	<string name="ServerMain_Structure_QueryFailure" formatted="false">Failed to query database structure (%s)</string>
 	<string name="ServerMain_Structure_EntryLoading">%s (Loading…)</string>
@@ -46,13 +66,58 @@
 	<string name="ServerMain_Structure_Header_Database_NoParam" formatted="false">Database</string>
 	<string name="ServerMain_Structure_Header_Table_NoParam" formatted="false">Table</string>
 	<string name="ServerMain_Structure_Header_Schema_NoParam" formatted="false">Schema</string>
+	<string name="ServerMain_Structure_ColumnName">Column</string>
+	<string name="ServerMain_Structure_ColumnType">Type</string>
+	<string name="ServerMain_Structure_ColumnNullable">Nullable?</string>
+	<string name="ServerMain_Structure_ColumnKey">Key</string>
+	<string name="ServerMain_Structure_ColumnExtra">Extra</string>
+	<string name="ServerMain_Structure_ColumnDefault">Default</string>
 
 	<string name="Connection_CriticalError" formatted="false">Critical error connecting to MySQL database:\n%s</string>
 	<string name="Connection_SuccessfulToast" formatted="false">Connected to %s\@%s:%s successfully</string>
 	<string name="Connection_Disconencted" formatted="false">Disconnected from %s</string>
+	<string name="Connection_Connecting">Creating connection…</string>
+	<string name="Connection_ResolveDNS">Resolving hostname…</string>
+	<string name="Connection_Connected">Connection created</string>
 
 	<string name="ConnError_UnknownHost" formatted="false">Hostname %s could not be resolved</string>
 	<string name="ConnError_Establish" formatted="false">Could not establish connection to server:\n%s</string>
 	<string name="ConnError_Close" formatted="false">Failed to close MySQL connection:\n%s.</string>
 	<string name="ConnError_Access" formatted="false">Problem accessing database:\n%s</string>
+
+	<string name="PresentResult_QueryTitle">Query:</string>
+	<string name="PresentResult_Error_ErrorLine"><![CDATA[Result: <b>Error</b>]]></string>
+	<string name="PresentResult_Success">Query successful!</string>
+	<string name="PresentResult_Error">Query failed!</string>
+	<string name="PresentResult_UpdateCount" formatted="false">%d row(s) changed.</string>
+	<string name="PresentResult_Query_TableHint">Click on a cell to copy. Long-click for details.</string>
+	<string name="ServerMain_Query_ClearQuery">Clear</string>
+	<string name="PresentResult_Query_From">"From: "</string>
+	<string name="PresentResult_Query_To">"To: "</string>
+	<string name="PresentResult_Query_Count">"Count: "</string>
+	<string name="PresentResult_Query_SubmitBounds">Update</string>
+	<string name="PresentResult_Query_Bounds" formatted="false">Showing rows %d-%d (totally %d) of %d row(s)</string>
+	<string name="PresentResult_Query_BoundsWarning">Warning: Showing too many rows may result in lag!</string>
+
+	<string name="ServerMain_Status_ServerAddress">Server address</string>
+	<string name="ServerMain_Status_ServerAddressValue" formatted="false">%3$s@%1$s:%2$d</string>
+	<string name="ServerMain_Status_ServerVersion">Server version</string>
+	<string name="ServerMain_Status_CurrentDatabase">Current schema</string>
+	<string name="ServerMain_Status_ConnectionId">Connection ID</string>
+	<string name="ServerMain_Status_Questions">User queries\n(Questions)</string>
+	<string name="ServerMain_Status_Queries">Total queries</string>
+	<string name="ServerMain_Status_SlowQueries">Slow queries</string>
+	<string name="ServerMain_Status_Uptime">Uptime</string>
+	<string name="ServerMain_Status_QPS">Queries\nPer Second</string>
+
+	<string name="Term_Invalid">Invalid</string>
+	<string-array name="Time_Units">
+		<item>d</item>
+		<item>h</item>
+		<item>min</item>
+		<item>s</item>
+	</string-array>
+	<string name="Time_ValueUnitSeparator">""</string>
+	<string name="Time_InterUnitSeparator">" "</string>
+	<string name="PresentResult_Query_EmptyResultSet">Empty result set (0 row)</string>
 </resources>

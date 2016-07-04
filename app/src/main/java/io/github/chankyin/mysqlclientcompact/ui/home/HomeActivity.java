@@ -1,4 +1,4 @@
-package io.github.chankyin.mysqlclientcompact;
+package io.github.chankyin.mysqlclientcompact.ui.home;
 
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -13,8 +13,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import io.github.chankyin.mysqlclientcompact.R;
 import io.github.chankyin.mysqlclientcompact.objects.ServerObject;
-import io.github.chankyin.mysqlclientcompact.serverui.ServerMainActivity;
+import io.github.chankyin.mysqlclientcompact.ui.server.main.ServerMainActivity;
 import lombok.Getter;
 
 import java.io.IOException;
@@ -73,9 +74,22 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 		onServersChanged();
 	}
 
+	public void substituteServer(ServerObject server, int id){
+		servers.set(id, server);
+		onServersChanged();
+	}
+
 	public void deleteServer(int id){
 		servers.remove(id);
 		onServersChanged();
+	}
+
+	public void editServer(int id){
+		DialogFragment dialog = new AddServerDialogFragment();
+		Bundle args = new Bundle();
+		args.putInt(AddServerDialogFragment.ARG_EDIT_SERVER_ID, id);
+		dialog.setArguments(args);
+		dialog.show(getSupportFragmentManager(), "editServer");
 	}
 
 	public void onServersChanged(){
@@ -96,7 +110,8 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 		editor.putString("servers", json);
 		editor.apply();
 
-		list.setAdapter(new ServerObjectArrayAdapter(servers));
+		((ServerObjectArrayAdapter) list.getAdapter()).notifyDataSetChanged();
+//		list.setAdapter(new ServerObjectArrayAdapter(servers));
 	}
 
 	@Override
@@ -106,11 +121,16 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 
 	@Override
 	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id){
-		DeleteServerDialogFragment dialog = new DeleteServerDialogFragment();
+//		DeleteServerDialogFragment dialog = new DeleteServerDialogFragment();
+//		Bundle args = new Bundle();
+//		args.putInt("serverId", position);
+//		dialog.setArguments(args);
+//		dialog.show(getSupportFragmentManager(), "deleteServer");
+		LongClickServerListDialog dialog = new LongClickServerListDialog();
 		Bundle args = new Bundle();
-		args.putInt("serverId", position);
+		args.putInt(LongClickServerListDialog.ARG_SERVER_ID, position);
 		dialog.setArguments(args);
-		dialog.show(getSupportFragmentManager(), "deleteServer");
+		dialog.show(getSupportFragmentManager(), "serverActions");
 		return true;
 	}
 

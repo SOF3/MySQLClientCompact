@@ -16,8 +16,31 @@
 	          android:fontFamily="monospace"
 	          android:inputType="textMultiLine|textNoSuggestions"
 	          android:imeOptions="flagNoExtractUi"/>
-	<Button android:id="@+id/ServerMain_Query_QueryButton"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:text="@string/ServerMain_Query_Execute"/>
+	<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			style="?android:attr/buttonBarStyle">
+		<Button android:id="@+id/ServerMain_Query_QueryButton"
+		        android:layout_width="0dp"
+		        android:layout_weight="1"
+		        android:layout_height="wrap_content"
+		        android:text="@string/ServerMain_Query_Execute"
+		        style="?android:attr/buttonBarButtonStyle"/>
+		<Button android:id="@+id/ServerMain_Query_ClearQuery"
+		        android:layout_width="0dp"
+		        android:layout_weight="1"
+		        android:layout_height="wrap_content"
+		        android:text="@string/ServerMain_Query_ClearQuery"
+		        style="?android:attr/buttonBarButtonStyle"/>
+	</LinearLayout>
+	<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/ServerMain_Query_History"/>
+	<ListView
+			android:id="@+id/ServerMain_Query_HistoryList"
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="1"/>
 </LinearLayout>

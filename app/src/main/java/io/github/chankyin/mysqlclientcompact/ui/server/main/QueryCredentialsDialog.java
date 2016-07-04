@@ -1,4 +1,4 @@
-package io.github.chankyin.mysqlclientcompact.serverui;
+package io.github.chankyin.mysqlclientcompact.ui.server.main;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -8,7 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.*;
-import io.github.chankyin.mysqlclientcompact.MyApplication;
+import io.github.chankyin.mysqlclientcompact.Main;
 import io.github.chankyin.mysqlclientcompact.R;
 import io.github.chankyin.mysqlclientcompact.objects.ServerObject;
 
@@ -33,15 +33,15 @@ public class QueryCredentialsDialog extends DialogFragment{
 		layout.setOrientation(LinearLayout.VERTICAL);
 
 		line = new LinearLayout(getActivity());
-		line.setLayoutParams(MyApplication.MP_WC);
+		line.setLayoutParams(Main.MP_WC);
 		line.setOrientation(LinearLayout.HORIZONTAL);
 		textView = new TextView(getActivity());
-		textView.setLayoutParams(MyApplication.WC_WC);
+		textView.setLayoutParams(Main.WC_WC);
 		textView.setText(R.string.QueryCred_Username);
 		line.addView(textView);
 		usernameEdit = new EditText(getActivity());
 		usernameEdit.setInputType(TYPE_CLASS_TEXT | TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-		usernameEdit.setLayoutParams(MyApplication.WC_WC);
+		usernameEdit.setLayoutParams(Main.WC_WC);
 		if(server.getUsername() != null){
 			usernameEdit.setText(server.getUsername());
 		}
@@ -49,20 +49,20 @@ public class QueryCredentialsDialog extends DialogFragment{
 		layout.addView(line);
 
 		line = new LinearLayout(getActivity());
-		line.setLayoutParams(MyApplication.MP_WC);
+		line.setLayoutParams(Main.MP_WC);
 		line.setOrientation(LinearLayout.HORIZONTAL);
 		textView = new TextView(getActivity());
-		textView.setLayoutParams(MyApplication.WC_WC);
+		textView.setLayoutParams(Main.WC_WC);
 		textView.setText(R.string.QueryCred_Password);
 		line.addView(textView);
 		passwordEdit = new EditText(getActivity());
 		passwordEdit.setInputType(TYPE_CLASS_TEXT | TYPE_TEXT_VARIATION_PASSWORD);
-		passwordEdit.setLayoutParams(MyApplication.WC_WC);
+		passwordEdit.setLayoutParams(Main.WC_WC);
 		line.addView(passwordEdit);
 		layout.addView(line);
 
 		final CheckBox box = new CheckBox(getActivity());
-		box.setLayoutParams(MyApplication.MP_WC);
+		box.setLayoutParams(Main.MP_WC);
 		box.setText(R.string.Global_ShowPassword);
 		box.setOnClickListener(new View.OnClickListener(){
 			@Override

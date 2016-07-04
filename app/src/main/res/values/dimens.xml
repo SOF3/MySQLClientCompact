@@ -11,4 +11,10 @@
 	<dimen name="database_structure_text_font">4.5sp</dimen>
 	<dimen name="database_structure_entry_padding">5dp</dimen>
 	<dimen name="database_structure_left_padding_indent">20dp</dimen><!--deprecated-->
+	<dimen name="table_value_padding">5dp</dimen>
+	<dimen name="query_log_font">3sp</dimen>
+	<dimen name="query_log_height">50dp</dimen>
+	<dimen name="query_history_time_font">2sp</dimen>
+	<dimen name="query_result_status_font">5sp</dimen>
+	<dimen name="present_result_query_font">20sp</dimen>
 </resources>

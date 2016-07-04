@@ -4,6 +4,7 @@ import android.app.Application;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.StringRes;
+import android.support.annotation.UiThread;
 import android.util.Log;
 import android.widget.Toast;
 import io.github.chankyin.mysqlclientcompact.R;
@@ -11,9 +12,8 @@ import io.github.chankyin.mysqlclientcompact.mysql.result.ProcessedErrorResult;
 import io.github.chankyin.mysqlclientcompact.mysql.result.ProcessedQueryResult;
 import io.github.chankyin.mysqlclientcompact.mysql.result.ProcessedResult;
 import io.github.chankyin.mysqlclientcompact.mysql.result.ProcessedUpdateResult;
-import io.github.chankyin.mysqlclientcompact.objects.LocalTableRef;
-import io.github.chankyin.mysqlclientcompact.objects.ServerObject;
-import io.github.chankyin.mysqlclientcompact.serverui.ServerMainActivity;
+import io.github.chankyin.mysqlclientcompact.objects.*;
+import io.github.chankyin.mysqlclientcompact.ui.server.main.ServerMainActivity;
 import lombok.Getter;
 
 import java.net.InetAddress;
@@ -51,12 +51,14 @@ public class ConnectionThread extends Thread{
 	@Override
 	public void run(){
 		InetAddress address;
+		postQueryLog(new SimpleQueryLogEntry(R.string.Connection_ResolveDNS));
 		try{
 			address = InetAddress.getByName(serverObject.getHostname());
 		}catch(UnknownHostException e){
 			postCriticalError(UNKNOWN_HOST, serverObject.getHostname());
 			return;
 		}
+		postQueryLog(new SimpleQueryLogEntry(R.string.Connection_Connecting));
 		try{
 			connection = DriverManager.getConnection("jdbc:mysql://" +
 					address.getHostAddress() + ":" + serverObject.getPort() +
@@ -65,6 +67,7 @@ public class ConnectionThread extends Thread{
 			postCriticalError(ESTABLISH_ERROR, e.getLocalizedMessage());
 			return;
 		}
+		postQueryLog(new SimpleQueryLogEntry(R.string.Connection_Connected));
 
 		connected = true;
 		postShortToast(R.string.Connection_SuccessfulToast,
@@ -100,6 +103,7 @@ public class ConnectionThread extends Thread{
 
 	public void disconnect(){
 		stopping = true;
+		Log.v("MCC", "Disconnected", new Throwable());
 	}
 
 	public String[] getPrimaryKeys(String schema, String table) throws SQLException{
@@ -123,10 +127,13 @@ public class ConnectionThread extends Thread{
 	private String[] updatePrimaryKeysCache(LocalTableRef ref) throws SQLException{
 		assertThisThread();
 		Log.d("MySQL query", "Updating primary keys for " + ref);
-		ResultSet keys = connection.getMetaData().getPrimaryKeys(ref.getSchema(), ref.getSchema(), ref.getTable());
 		List<String> list = new ArrayList<>();
-		while(keys.next()){
-			list.add(keys.getString("COLUMN_NAME"));
+		try{
+			ResultSet keys = connection.getMetaData().getPrimaryKeys(ref.getSchema(), ref.getSchema(), ref.getTable());
+			while(keys.next()){
+				list.add(keys.getString("COLUMN_NAME"));
+			}
+		}catch(SQLException e){
 		}
 
 		String[] array = new String[list.size()];
@@ -135,10 +142,11 @@ public class ConnectionThread extends Thread{
 		return array;
 	}
 
-	public ProcessedResult exec(String query) throws SQLException{
+	private ProcessedResult exec(String query) throws SQLException{
 		assertThisThread();
 		Log.d("MySQL query", "Executing query: " + query);
 		Statement stmt;
+
 		int spacePos = query.indexOf(' ');
 		if(spacePos == -1){
 			spacePos = query.length();
@@ -179,6 +187,20 @@ public class ConnectionThread extends Thread{
 		}
 
 		return result;
+	}
+
+	public long measurePing(){
+		assertThisThread();
+		try{
+			long start = System.nanoTime();
+			if(connection.isValid(5)){
+				long end = System.nanoTime();
+				return end - start;
+			}
+		}catch(SQLException e){
+			Log.wtf("Connection", e);
+		}
+		return -1;
 	}
 
 
@@ -232,25 +254,38 @@ public class ConnectionThread extends Thread{
 		disconnect();
 	}
 
+	@UiThread
 	public void runOnConnectionThread(Task task){
 		synchronized(tasks){
 			tasks.add(task);
 		}
 	}
 
+	@UiThread
 	public void scheduleAsyncQuery(final String query, final QueryResultHandler resultHandler){
 		assertUiThread();
+
+		final QueryReference queryRef = new QueryReference(query);
+		postQueryLog(queryRef);
+
 		runOnConnectionThread(new Task(){
 			@Override
 			public void run(ConnectionThread thread){
 				final ProcessedResult result;
+				queryRef.setState(QueryReference.QueryState.EXECUTING);
+				activity.scheduleUpdateQueryLog();
 				try{
 					result = exec(query);
 				}catch(SQLException e){
+					queryRef.setState(QueryReference.QueryState.ERROR);
+					activity.scheduleUpdateQueryLog();
 					postCriticalError(UNKNOWN_ACCESS_ERROR, e.getLocalizedMessage());
 					return;
 				}
-				activity.runOnUiThread(new Runnable(){
+				queryRef.setState(result.getQueryType() == ProcessedResult.Type.ERROR ?
+						QueryReference.QueryState.ERROR : QueryReference.QueryState.COMPLETED);
+				activity.scheduleUpdateQueryLog();
+				handler.post(new Runnable(){
 					@Override
 					public void run(){
 						resultHandler.handle(result); // no lambdas >_<
@@ -258,6 +293,11 @@ public class ConnectionThread extends Thread{
 				});
 			}
 		});
+	}
+
+	public void postQueryLog(final QueryLogEntry entry){
+		activity.getQueryLog().addLine(entry, false);
+		activity.scheduleUpdateQueryLog();
 	}
 
 
@@ -271,6 +311,7 @@ public class ConnectionThread extends Thread{
 		}
 	}
 
+	@UiThread
 	public void assertUiThread() throws IllegalThreadStateException{
 		if(Looper.myLooper() != Looper.getMainLooper()){
 			throw new IllegalThreadStateException("This method can only be called from the UI thread");

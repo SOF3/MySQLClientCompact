@@ -73,7 +73,8 @@
 		<EditText android:id="@+id/AddServer_DefaultSchema"
 		          android:layout_width="match_parent"
 		          android:layout_height="wrap_content"
-		          android:inputType="textNoSuggestions"/>
+		          android:inputType="textNoSuggestions"
+		          android:hint="@string/AddServer_DefaultSchema_Hint"/>
 	</LinearLayout>
 	<CheckBox android:id="@+id/AddServer_ShowPassword"
 	          android:layout_width="match_parent"

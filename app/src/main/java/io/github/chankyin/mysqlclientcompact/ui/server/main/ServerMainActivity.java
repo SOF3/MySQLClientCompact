@@ -1,9 +1,12 @@
-package io.github.chankyin.mysqlclientcompact.serverui;
+package io.github.chankyin.mysqlclientcompact.ui.server.main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.UiThread;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -11,11 +14,17 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.JsonReader;
 import android.util.Log;
-import android.widget.LinearLayout;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import io.github.chankyin.mysqlclientcompact.R;
 import io.github.chankyin.mysqlclientcompact.mysql.ConnectionThread;
-import io.github.chankyin.mysqlclientcompact.mysql.result.ProcessedResult;
+import io.github.chankyin.mysqlclientcompact.objects.QueryLogEntry;
 import io.github.chankyin.mysqlclientcompact.objects.ServerObject;
+import io.github.chankyin.mysqlclientcompact.objects.struct.DatabaseStructure;
+import io.github.chankyin.mysqlclientcompact.view.LogTextView;
 import lombok.Getter;
 
 import java.io.IOException;
@@ -34,10 +43,14 @@ public class ServerMainActivity extends AppCompatActivity{
 
 	@Getter private ViewPager pager;
 	@Getter private ServerObject server;
+	@Getter private ScrollView scroll;
+	@Getter private LogTextView<QueryLogEntry> queryLog;
 
-	@Getter private ConnectionThread thread = null;
+	@Getter private ConnectionThread connectionThread = null;
 
 	@Getter private MyFragmentPagerAdapter pagerAdapter;
+
+	@Getter private boolean queryLogUpdateScheduled = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -73,46 +86,123 @@ public class ServerMainActivity extends AppCompatActivity{
 		}
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu){
+		getMenuInflater().inflate(R.menu.server_main, menu);
+		return true;
+	}
+
+	@UiThread
 	public void init(){
-		thread = new ConnectionThread(server, this);
-		thread.start();
+		final Handler handler = new Handler();
+		final long UPDATE_RATE = 100;
+		Runnable doUpdateQueryLog = new Runnable(){
+			@Override
+			public void run(){
+				doUpdateQueryLog();
+				handler.postDelayed(this, UPDATE_RATE);
+			}
+		};
+		handler.postDelayed(doUpdateQueryLog, UPDATE_RATE);
+		queryLog = new LogTextView<>(this);
+
+		connectionThread = new ConnectionThread(server, this);
+		connectionThread.start();
 
 		setTitle(server.getServerName());
 
-		LinearLayout layout = new LinearLayout(this);
+		setContentView(R.layout.activity_server_main);
 		pagerAdapter = new MyFragmentPagerAdapter();
-		layout.setOrientation(LinearLayout.VERTICAL);
 
-		TabLayout tabs = new TabLayout(this);
+		TabLayout tabs = (TabLayout) findViewById(R.id.ServerMain_TabLayout);
+		assert tabs != null;
 		for(int tabNumber = 0; tabNumber < pagerAdapter.getCount(); tabNumber++){
 			tabs.addTab(tabs.newTab().setText(ServerMainPage.values()[tabNumber].getStringId()));
 		}
-		layout.addView(tabs);
 
-		pager = new ViewPager(this);
+		pager = (ViewPager) findViewById(R.id.ServerMain_ViewPager);
+		assert pager != null;
 		pager.setId(R.id.ServerMain_ViewPager);
 		pager.setAdapter(pagerAdapter);
-		layout.addView(pager);
+		pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+			@Override
+			public void onPageSelected(int position){
+				getPage(ServerMainPage.values()[position]).onSelected();
+			}
+		});
 
 		tabs.setupWithViewPager(pager);
 
-		setContentView(layout);
+		final TextView queryLogTitle = (TextView) findViewById(R.id.ServerMain_QueryLog_Title);
+		assert queryLogTitle != null;
+		queryLogTitle.setOnClickListener(new View.OnClickListener(){
+			private boolean hidden = false;
+
+			@Override
+			public void onClick(View v){
+				if(!hidden){
+					queryLog.setVisibility(View.GONE);
+					queryLogTitle.setText(R.string.ServerMain_QueryLog_Title_Hidden);
+					hidden = true;
+				}else{
+					queryLog.setVisibility(View.VISIBLE);
+					queryLogTitle.setText(R.string.ServerMain_QueryLog_Title);
+					hidden = false;
+				}
+			}
+		});
+
+		queryLog.setTextSize(getResources().getDimension(R.dimen.query_log_font));
+		queryLog.setTypeface(Typeface.MONOSPACE);
+		scroll = (ScrollView) findViewById(R.id.ServerMain_QueryLog_Scroll);
+		assert scroll != null;
+		scroll.addView(queryLog);
 	}
 
 	@Override
 	protected void onDestroy(){
 		super.onDestroy();
-		thread.disconnect();
+		connectionThread.disconnect();
 	}
 
-	public void handleQueryResult(ProcessedResult result){
-
+	@Override
+	public void onBackPressed(){
+		if(!((MFragment) pagerAdapter.getItem(pager.getCurrentItem())).onBackPressed()){
+			super.onBackPressed();
+		}
 	}
 
-	public Fragment getPage(ServerMainPage page){
-		for(Fragment fragment : pagerAdapter.getInstances()){
+	public void onRefreshStatus(MenuItem item){
+		StatusFragment fragment = (StatusFragment) getPage(ServerMainPage.STATUS);
+		fragment.refresh();
+	}
+
+	public void onRefreshStructure(MenuItem item){
+		StructureFragment fragment = (StructureFragment) getPage(ServerMainPage.STRUCTURE);
+		if(fragment.getDatabase() != null){
+			DatabaseStructure database = new DatabaseStructure(server);
+			fragment.setDatabase(database);
+			database.doQuery(this);
+		}
+	}
+
+	public void scheduleUpdateQueryLog(){
+		queryLogUpdateScheduled = true;
+	}
+
+	@UiThread
+	public void doUpdateQueryLog(){
+		if(queryLogUpdateScheduled){
+			queryLogUpdateScheduled = false;
+			queryLog.updateText();
+		}
+	}
+
+	public MFragment getPage(ServerMainPage page){
+		for(int i = 0; i < pagerAdapter.getCount(); i++){
+			Fragment fragment = pagerAdapter.getItem(i);
 			if(fragment.getClass().equals(page.getFragmentClass())){
-				return fragment;
+				return (MFragment) fragment;
 			}
 		}
 		return null;
@@ -134,8 +224,7 @@ public class ServerMainActivity extends AppCompatActivity{
 				if(instances[position] != null){
 					return instances[position];
 				}
-				return instances[position]
-						= ServerMainPage.values()[position].getFragmentClass().newInstance();
+				return instances[position] = ServerMainPage.values()[position].getFragmentClass().newInstance();
 			}catch(InstantiationException e){
 				Log.wtf("ServerMain", e);
 				throw new RuntimeException(e);

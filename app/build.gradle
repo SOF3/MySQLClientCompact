@@ -8,12 +8,13 @@ android {
         applicationId "io.github.chankyin.mysqlclientcompact"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 2
+        versionCode 3
         versionName "1.0"
     }
     buildTypes {
         debug {
             debuggable true
+            minifyEnabled true
         }
         release {
             minifyEnabled false
@@ -22,16 +23,16 @@ android {
     }
 }
 
-repositories{
+repositories {
     mavenCentral()
 }
 
 dependencies {
-    provided "org.projectlombok:lombok:1.12.6"
+    provided 'org.projectlombok:lombok:1.12.6'
     //noinspection GradlePath
     compile files('../libs/mysql-connector-java-5.1.34-bin.jar')
-    compile group: 'commons-io', name: 'commons-io', version: '2.5'
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'commons-io:commons-io:2.5'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:support-v4:23.4.0'

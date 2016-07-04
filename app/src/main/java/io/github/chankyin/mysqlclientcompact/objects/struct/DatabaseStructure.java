@@ -4,15 +4,20 @@ import io.github.chankyin.mysqlclientcompact.R;
 import io.github.chankyin.mysqlclientcompact.mysql.ConnectionThread;
 import io.github.chankyin.mysqlclientcompact.mysql.result.ProcessedResult;
 import io.github.chankyin.mysqlclientcompact.objects.ServerObject;
-import io.github.chankyin.mysqlclientcompact.serverui.ServerMainActivity;
+import io.github.chankyin.mysqlclientcompact.ui.server.main.ServerMainActivity;
+import lombok.Getter;
 
 public class DatabaseStructure extends Structure<SchemaStructure, ServerObject>{
+	@Getter private boolean queryStarted = false;
+
 	public DatabaseStructure(ServerObject parent){
 		super(parent, null);
 	}
 
+	@Override
 	public void doQuery(final ServerMainActivity activity){
-		activity.getThread().scheduleAsyncQuery("SHOW SCHEMAS", new ConnectionThread.QueryResultHandler(){
+		queryStarted = true;
+		activity.getConnectionThread().scheduleAsyncQuery("SHOW SCHEMAS", new ConnectionThread.QueryResultHandler(){
 			@Override
 			public void handle(ProcessedResult result){
 				handleResult(activity, result, new ValueConstructor<SchemaStructure>(){
@@ -32,7 +37,7 @@ public class DatabaseStructure extends Structure<SchemaStructure, ServerObject>{
 
 	@Deprecated
 	public void onFirstDisplay(final ServerMainActivity activity){
-		activity.getThread().scheduleAsyncQuery("SHOW SCHEMAS", new ConnectionThread.QueryResultHandler(){
+		activity.getConnectionThread().scheduleAsyncQuery("SHOW SCHEMAS", new ConnectionThread.QueryResultHandler(){
 			@Override
 			public void handle(ProcessedResult result){
 //				Log.d("DatabaseStructure", "Got result of type " + result.getQueryType().name());

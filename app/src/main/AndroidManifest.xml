@@ -4,26 +4,34 @@
 
 	<uses-permission android:name="android.permission.INTERNET"/>
 
-	<application android:name=".MyApplication"
+	<application
+			android:name=".Main"
 			android:allowBackup="true"
 			android:icon="@mipmap/ic_launcher"
 			android:label="@string/Global_AppName"
 			android:supportsRtl="true"
-
 			android:theme="@style/AppTheme">
-		<activity android:name=".HomeActivity">
+		<activity android:name=".ui.home.HomeActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
 		</activity>
-		<activity android:name=".serverui.ServerMainActivity">
+		<activity
+				android:name=".ui.server.main.ServerMainActivity"
+				android:configChanges="orientation|screenSize">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW"/>
+
 				<data android:scheme="jdbc"/>
 				<data android:scheme="jdbc:mysql"/>
 			</intent-filter>
+			<meta-data
+					android:name="android.support.PARENT_ACTIVITY"
+					android:value=".ui.home.HomeActivity"/>
+		</activity>
+		<activity android:name=".ui.server.result.PresentResultActivity">
 		</activity>
 	</application>
 

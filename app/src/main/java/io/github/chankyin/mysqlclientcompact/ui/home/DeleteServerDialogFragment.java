@@ -1,4 +1,4 @@
-package io.github.chankyin.mysqlclientcompact;
+package io.github.chankyin.mysqlclientcompact.ui.home;
 
 import android.app.Dialog;
 import android.content.DialogInterface;

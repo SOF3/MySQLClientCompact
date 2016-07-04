@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+	<HorizontalScrollView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+		<TableLayout
+				android:id="@+id/ServerMain_Status_Table"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content">
+			<TableRow>
+				<TextView style="@style/ServerStatus_Key"
+				          android:text="@string/ServerMain_Status_ServerAddress"/>
+				<TextView style="@style/ServerStatus_Val" android:text="@string/ServerMain_Status_Loading"
+				          android:id="@+id/ServerMain_Status_ServerAddress"/>
+			</TableRow>
+			<TableRow>
+				<TextView style="@style/ServerStatus_Key"
+				          android:text="@string/ServerMain_Status_ServerVersion"/>
+				<TextView style="@style/ServerStatus_Val" android:text="@string/ServerMain_Status_Loading"
+				          android:id="@+id/ServerMain_Status_ServerVersion"/>
+			</TableRow>
+			<TableRow>
+				<TextView style="@style/ServerStatus_Key"
+				          android:text="@string/ServerMain_Status_CurrentDatabase"/>
+				<TextView style="@style/ServerStatus_Val" android:text="@string/ServerMain_Status_Loading"
+				          android:id="@+id/ServerMain_Status_CurrentDatabase"/>
+			</TableRow>
+			<TableRow>
+				<TextView style="@style/ServerStatus_Key"
+				          android:text="@string/ServerMain_Status_ConnectionId"/>
+				<TextView style="@style/ServerStatus_Val" android:text="@string/ServerMain_Status_Loading"
+				          android:id="@+id/ServerMain_Status_ConnectionId"/>
+			</TableRow>
+			<TableRow>
+				<TextView style="@style/ServerStatus_Key"
+				          android:text="@string/ServerMain_Status_Questions"/>
+				<TextView style="@style/ServerStatus_Val" android:text="@string/ServerMain_Status_Loading"
+				          android:id="@+id/ServerMain_Status_Questions"/>
+			</TableRow>
+			<TableRow>
+				<TextView style="@style/ServerStatus_Key"
+				          android:text="@string/ServerMain_Status_Queries"/>
+				<TextView style="@style/ServerStatus_Val" android:text="@string/ServerMain_Status_Loading"
+				          android:id="@+id/ServerMain_Status_Queries"/>
+			</TableRow>
+			<TableRow>
+				<TextView style="@style/ServerStatus_Key"
+				          android:text="@string/ServerMain_Status_SlowQueries"/>
+				<TextView style="@style/ServerStatus_Val" android:text="@string/ServerMain_Status_Loading"
+				          android:id="@+id/ServerMain_Status_SlowQueries"/>
+			</TableRow>
+			<TableRow>
+				<TextView style="@style/ServerStatus_Key"
+				          android:text="@string/ServerMain_Status_Uptime"/>
+				<TextView style="@style/ServerStatus_Val" android:text="@string/ServerMain_Status_Loading"
+				          android:id="@+id/ServerMain_Status_Uptime"/>
+			</TableRow>
+			<TableRow>
+				<TextView style="@style/ServerStatus_Key"
+				          android:text="@string/ServerMain_Status_QPS"/>
+				<TextView style="@style/ServerStatus_Val" android:text="@string/ServerMain_Status_Loading"
+				          android:id="@+id/ServerMain_Status_QPS"/>
+			</TableRow>
+		</TableLayout>
+	</HorizontalScrollView>
+</ScrollView>
