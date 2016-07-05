@@ -1,87 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
-	<LinearLayout android:orientation="horizontal"
-	              android:layout_width="match_parent"
-	              android:layout_height="wrap_content">
+<LinearLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="vertical"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+	<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
 		<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/AddServer_ServerName"/>
-		<EditText android:id="@+id/AddServer_ServerName"
-		          android:layout_width="wrap_content"
-		          android:layout_height="wrap_content"
-		          android:hint="@string/AddServer_ServerName_Hint"
-		          android:inputType="textAutoCorrect"/>
+		<EditText
+				android:id="@+id/AddServer_ServerName"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:hint="@string/AddServer_ServerName_Hint"
+				android:inputType="textAutoCorrect"/>
 	</LinearLayout>
-	<LinearLayout android:orientation="horizontal"
-	              android:layout_width="match_parent"
-	              android:layout_height="wrap_content">
+	<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
 		<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/AddServer_ServerAddress"/>
-		<EditText android:id="@+id/AddServer_Address"
-		          android:layout_width="wrap_content"
-		          android:layout_height="wrap_content"
-		          android:hint="@string/AddServer_Hostname_Hint"
-		          android:inputType="textUri"/>
+		<EditText
+				android:id="@+id/AddServer_Address"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:hint="@string/AddServer_Hostname_Hint"
+				android:inputType="textUri"/>
 		<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/Global_IpPortDelimiter"/>
-		<EditText android:id="@+id/AddServer_Port"
-		          android:layout_width="wrap_content"
-		          android:layout_height="wrap_content"
-		          android:text="@string/AddServer_Port_Default"
-		          android:hint="@string/AddServer_Port_Hint"
-		          android:inputType="number"/>
+		<EditText
+				android:id="@+id/AddServer_Port"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/AddServer_Port_Default"
+				android:hint="@string/AddServer_Port_Hint"
+				android:inputType="number"/>
 	</LinearLayout>
-	<LinearLayout android:orientation="horizontal"
-	              android:layout_width="match_parent"
-	              android:layout_height="wrap_content">
+	<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
 		<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/AddServer_Username"/>
-		<EditText android:id="@+id/AddServer_Username"
-		          android:layout_width="match_parent"
-		          android:layout_height="wrap_content"
-		          android:inputType="textNoSuggestions"/>
+		<EditText
+				android:id="@+id/AddServer_Username"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:inputType="textNoSuggestions"/>
 	</LinearLayout>
-	<LinearLayout android:orientation="horizontal"
-	              android:layout_width="match_parent"
-	              android:layout_height="wrap_content">
+	<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
 		<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/AddServer_Password"/>
-		<EditText android:id="@+id/AddServer_Password"
-		          android:layout_width="match_parent"
-		          android:layout_height="wrap_content"
-		          android:inputType="textPassword"/>
+		<EditText
+				android:id="@+id/AddServer_Password"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:inputType="textPassword"/>
 	</LinearLayout>
-	<LinearLayout android:orientation="horizontal"
-	              android:layout_width="match_parent"
-	              android:layout_height="wrap_content">
+	<CheckBox
+			android:id="@+id/AddServer_ShowPassword"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/Global_ShowPassword"/>
+	<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
 		<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/AddServer_DefaultSchema"/>
-		<EditText android:id="@+id/AddServer_DefaultSchema"
-		          android:layout_width="match_parent"
-		          android:layout_height="wrap_content"
-		          android:inputType="textNoSuggestions"
-		          android:hint="@string/AddServer_DefaultSchema_Hint"/>
+		<EditText
+				android:id="@+id/AddServer_DefaultSchema"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:inputType="textNoSuggestions"
+				android:hint="@string/AddServer_DefaultSchema_Hint"/>
 	</LinearLayout>
-	<CheckBox android:id="@+id/AddServer_ShowPassword"
-	          android:layout_width="match_parent"
-	          android:layout_height="wrap_content"
-	          android:text="@string/Global_ShowPassword"/>
-	<CheckBox android:id="@+id/AddServer_QueryPassword"
-	          android:layout_width="match_parent"
-	          android:layout_height="wrap_content"
-	          android:text="@string/AddServer_QueryPasswordText"/>
+	<CheckBox
+			android:id="@+id/AddServer_QueryPassword"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/AddServer_QueryPasswordText"/>
 </LinearLayout>

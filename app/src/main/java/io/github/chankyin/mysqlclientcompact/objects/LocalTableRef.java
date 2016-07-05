@@ -30,6 +30,6 @@ public class LocalTableRef{
 
 	@Override
 	public String toString(){
-		return schema + "." + table;
+		return '`' + schema + "`.`" + table + '`';
 	}
 }

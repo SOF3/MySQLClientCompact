@@ -1,5 +1,10 @@
 package io.github.chankyin.mysqlclientcompact.ui.server.main;
 
+import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -12,6 +17,7 @@ import io.github.chankyin.mysqlclientcompact.R;
 import io.github.chankyin.mysqlclientcompact.mysql.ConnectionThread;
 import io.github.chankyin.mysqlclientcompact.mysql.result.ProcessedResult;
 import io.github.chankyin.mysqlclientcompact.objects.ServerObject;
+import io.github.chankyin.mysqlclientcompact.ui.query.QueryEditorActivity;
 import io.github.chankyin.mysqlclientcompact.ui.server.result.PresentResultActivity;
 
 import java.text.DateFormat;
@@ -19,9 +25,13 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import static io.github.chankyin.mysqlclientcompact.ui.query.QueryEditorActivity.RESULT_KEY_QUERY;
+
 public class QueryFragment extends MFragment{
+	private static final int REQUEST_CODE_EDIT_QUERY = QueryEditorActivity.class.getCanonicalName().hashCode() & 0xFFFF;
 	private ServerMainActivity activity;
 
+	private EditText queryBox;
 	private List<ProcessedResult> history = new LinkedList<>();
 	private MyArrayAdapter adapter;
 
@@ -30,33 +40,50 @@ public class QueryFragment extends MFragment{
 		activity = (ServerMainActivity) getActivity();
 		ServerObject server = activity.getServer();
 		View layout = inflater.inflate(R.layout.server_main_fragment_query, container, false);
-		final EditText editText = (EditText) layout.findViewById(R.id.ServerMain_Query_QueryBox);
-		assert editText != null;
-		layout.findViewById(R.id.ServerMain_Query_QueryButton).setOnClickListener(new View.OnClickListener(){
+		queryBox = (EditText) layout.findViewById(R.id.ServerMain_Query_QueryBox);
+		assert queryBox != null;
+
+		layout.findViewById(R.id.ServerMain_Query_QueryButton).setOnClickListener(new ExecuteQueryButtonListener(queryBox));
+
+		Button copyButton = (Button) layout.findViewById(R.id.ServerMain_Query_CopyQuery);
+		copyButton.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(View v){
-				String query = editText.getText().toString();
-
-				if(query.isEmpty()){
-					Toast.makeText(activity, R.string.ServerMain_Query_Execute_Empty, Toast.LENGTH_LONG).show();
-					return;
-				}
-
-				activity.getConnectionThread().scheduleAsyncQuery(query, new MyQueryResultHandler());
+				ClipboardManager clipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
+				ClipData clip = ClipData.newPlainText("Query", queryBox.getText().toString());
+				clipboard.setPrimaryClip(clip);
 			}
 		});
+
 		Button clearButton = (Button) layout.findViewById(R.id.ServerMain_Query_ClearQuery);
 		clearButton.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(View v){
-				editText.getText().clear();
+				queryBox.getText().clear();
 			}
 		});
+
+		Button editorButton = (Button) layout.findViewById(R.id.ServerMain_Query_AdvancedEditor);
+		editorButton.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v){
+				startActivityForResult(new Intent(activity, QueryEditorActivity.class), REQUEST_CODE_EDIT_QUERY);
+			}
+		});
+
 		ListView list = (ListView) layout.findViewById(R.id.ServerMain_Query_HistoryList);
 		adapter = new MyArrayAdapter();
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(adapter);
+
 		return layout;
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data){
+		if(requestCode == REQUEST_CODE_EDIT_QUERY && resultCode == Activity.RESULT_OK){
+			queryBox.setText(data.getStringExtra(RESULT_KEY_QUERY));
+		}
 	}
 
 	private class MyQueryResultHandler implements ConnectionThread.QueryResultHandler{
@@ -98,6 +125,26 @@ public class QueryFragment extends MFragment{
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id){
 			PresentResultActivity.start(activity, getItem(position));
+		}
+	}
+
+	private class ExecuteQueryButtonListener implements View.OnClickListener{
+		private final EditText editText;
+
+		public ExecuteQueryButtonListener(EditText editText){
+			this.editText = editText;
+		}
+
+		@Override
+		public void onClick(View v){
+			String query = editText.getText().toString();
+
+			if(query.isEmpty()){
+				Toast.makeText(activity, R.string.ServerMain_Query_Execute_Empty, Toast.LENGTH_LONG).show();
+				return;
+			}
+
+			activity.getConnectionThread().scheduleAsyncQuery(query, new MyQueryResultHandler());
 		}
 	}
 }

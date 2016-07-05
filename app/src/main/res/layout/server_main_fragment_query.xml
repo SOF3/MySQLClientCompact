@@ -8,31 +8,48 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/ServerMain_Query_PromptQuery"/>
-	<EditText android:id="@+id/ServerMain_Query_QueryBox"
-	          android:layout_width="match_parent"
-	          android:layout_height="wrap_content"
-	          android:hint="@string/ServerMain_Query_QueryHint"
-	          android:typeface="monospace"
-	          android:fontFamily="monospace"
-	          android:inputType="textMultiLine|textNoSuggestions"
-	          android:imeOptions="flagNoExtractUi"/>
+	<EditText
+			android:id="@+id/ServerMain_Query_QueryBox"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/ServerMain_Query_QueryHint"
+			android:typeface="monospace"
+			android:fontFamily="monospace"
+			android:inputType="textMultiLine|textNoSuggestions"
+			android:imeOptions="flagNoExtractUi"/>
 	<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="horizontal"
 			style="?android:attr/buttonBarStyle">
-		<Button android:id="@+id/ServerMain_Query_QueryButton"
-		        android:layout_width="0dp"
-		        android:layout_weight="1"
-		        android:layout_height="wrap_content"
-		        android:text="@string/ServerMain_Query_Execute"
-		        style="?android:attr/buttonBarButtonStyle"/>
-		<Button android:id="@+id/ServerMain_Query_ClearQuery"
-		        android:layout_width="0dp"
-		        android:layout_weight="1"
-		        android:layout_height="wrap_content"
-		        android:text="@string/ServerMain_Query_ClearQuery"
-		        style="?android:attr/buttonBarButtonStyle"/>
+		<Button
+				android:id="@+id/ServerMain_Query_QueryButton"
+				android:layout_width="0dp"
+				android:layout_weight="15"
+				android:layout_height="wrap_content"
+				android:text="@string/ServerMain_Query_Execute"
+				style="?android:attr/buttonBarButtonStyle"/>
+		<Button
+				android:id="@+id/ServerMain_Query_CopyQuery"
+				android:layout_width="0dp"
+				android:layout_weight="10"
+				android:layout_height="wrap_content"
+				android:text="@android:string/copy"
+				style="?android:attr/buttonBarButtonStyle"/>
+		<Button
+				android:id="@+id/ServerMain_Query_ClearQuery"
+				android:layout_width="0dp"
+				android:layout_weight="10"
+				android:layout_height="wrap_content"
+				android:text="@string/ServerMain_Query_ClearQuery"
+				style="?android:attr/buttonBarButtonStyle"/>
+		<Button
+				android:id="@+id/ServerMain_Query_AdvancedEditor"
+				android:layout_width="0dp"
+				android:layout_weight="15"
+				android:layout_height="wrap_content"
+				android:text="@string/ServerMain_Query_AdvancedEditor"
+				style="?android:attr/buttonBarButtonStyle"/>
 	</LinearLayout>
 	<TextView
 			android:layout_width="match_parent"

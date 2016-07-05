@@ -55,6 +55,7 @@
 	<string name="ServerMain_Query_Execute">Execute query</string>
 	<string name="ServerMain_Query_Execute_Empty">Query is empty!</string>
 	<string name="ServerMain_Query_History">User query history:</string>
+	<string name="ServerMain_Query_AdvancedEditor">Generate query</string>
 
 	<string name="ServerMain_Status_Loading">Loading…</string>
 
@@ -117,7 +118,19 @@
 		<item>min</item>
 		<item>s</item>
 	</string-array>
+
+	<string name="StatementType_SELECT">SELECT</string>
+	<string name="StatementType_INSERT">INSERT</string>
+	<string name="StatementType_UPDATE">UPDATE</string>
+
+	<string-array name="QueryEditor_StatementTypes">
+		<item>@string/StatementType_SELECT</item>
+		<item>@string/StatementType_INSERT</item>
+		<item>@string/StatementType_UPDATE</item>
+	</string-array>
 	<string name="Time_ValueUnitSeparator">""</string>
 	<string name="Time_InterUnitSeparator">" "</string>
 	<string name="PresentResult_Query_EmptyResultSet">Empty result set (0 row)</string>
+	<string name="QueryEditor_StatementType">Statement type:</string>
+	<string name="QueryEditor_Preview_Hint">Generated query will be shown here</string>
 </resources>

@@ -27,11 +27,14 @@
 				<data android:scheme="jdbc"/>
 				<data android:scheme="jdbc:mysql"/>
 			</intent-filter>
+
 			<meta-data
 					android:name="android.support.PARENT_ACTIVITY"
 					android:value=".ui.home.HomeActivity"/>
 		</activity>
 		<activity android:name=".ui.server.result.PresentResultActivity">
+		</activity>
+		<activity android:name=".ui.query.QueryEditorActivity">
 		</activity>
 	</application>
 
