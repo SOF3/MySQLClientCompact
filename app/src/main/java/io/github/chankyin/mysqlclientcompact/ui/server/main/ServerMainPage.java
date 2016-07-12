@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum ServerMainPage{
-	QUERY(QueryFragment.class, R.string.ServerMain_TabTitles_Query),
 	STATUS(StatusFragment.class, R.string.ServerMain_TabTitles_Status),
+	QUERY(QueryFragment.class, R.string.ServerMain_TabTitles_Query),
 	STRUCTURE(StructureFragment.class, R.string.ServerMain_TabTitles_Structure);
 
 	@Getter private final Class<? extends MFragment> fragmentClass;

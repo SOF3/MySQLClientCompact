@@ -17,4 +17,5 @@
 	<dimen name="query_history_time_font">2sp</dimen>
 	<dimen name="query_result_status_font">5sp</dimen>
 	<dimen name="query_view_font">20sp</dimen>
+	<dimen name="status_text_size">16sp</dimen>
 </resources>

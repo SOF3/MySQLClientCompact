@@ -8,6 +8,7 @@
 
 	<string name="Home_Menu_Add">Add Server</string>
 	<string name="Home_Menu_Edit">Edit Server</string>
+	<string name="Home_Menu_Actions_Title" formatted="false">Choose action with %s…</string>
 	<string-array name="Home_Menu_Actions">
 		<item>Edit</item>
 		<item>Delete</item>
@@ -122,15 +123,23 @@
 	<string name="StatementType_SELECT">SELECT</string>
 	<string name="StatementType_INSERT">INSERT</string>
 	<string name="StatementType_UPDATE">UPDATE</string>
+	<string name="StatementType_DELETE">DELETE</string>
+	<string name="StatementType_REPLACE">REPLACE</string>
 
 	<string-array name="QueryEditor_StatementTypes">
 		<item>@string/StatementType_SELECT</item>
 		<item>@string/StatementType_INSERT</item>
 		<item>@string/StatementType_UPDATE</item>
+		<item>@string/StatementType_DELETE</item>
+		<item>@string/StatementType_REPLACE</item>
 	</string-array>
 	<string name="Time_ValueUnitSeparator">""</string>
 	<string name="Time_InterUnitSeparator">" "</string>
+
 	<string name="PresentResult_Query_EmptyResultSet">Empty result set (0 row)</string>
+
 	<string name="QueryEditor_StatementType">Statement type:</string>
 	<string name="QueryEditor_Preview_Hint">Generated query will be shown here</string>
+	<string name="QueryEditor_Select_Distinct">Only show distinct results</string>
+	<string name="QueryEditor_Select_AddColumn">Add Column</string>
 </resources>

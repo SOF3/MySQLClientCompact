@@ -18,4 +18,6 @@ public abstract class StructuredQuery{
 	}
 
 	protected abstract String getQueryString();
+
+	public abstract boolean isValid();
 }

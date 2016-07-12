@@ -3,6 +3,7 @@ package io.github.chankyin.mysqlclientcompact.ui.server.main;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +25,12 @@ public class StatusFragment extends MFragment implements ConnectionThread.QueryR
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
-		activity = (ServerMainActivity) getActivity();
-		View wrapper = inflater.inflate(R.layout.server_main_fragment_status, container, false);
-		layout = (LinearLayout) wrapper.findViewById(R.id.ServerMain_Status_Table);
+		Log.w("MCC", "Executing StatusFragment.createView");
+		if(layout == null){
+			activity = (ServerMainActivity) getActivity();
+			View wrapper = inflater.inflate(R.layout.server_main_fragment_status, container, false);
+			layout = (LinearLayout) wrapper.findViewById(R.id.ServerMain_Status_Table);
+		}
 
 		refresh();
 

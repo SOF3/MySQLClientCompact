@@ -13,8 +13,8 @@ android:
   - extra-android-m2repository
   - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
 install:
-  - wget -O - https://downloads.mysql.com/archives/get/file/mysql-connector-java-5.1.34.tar.gz | tar zxf -
-  - mkdir libs && cp mysql-connector-java-5.1.34/mysql-connector-java-5.1.34-bin.jar libs
+#  - wget -O - https://downloads.mysql.com/archives/get/file/mysql-connector-java-5.1.34.tar.gz | tar zxf -
+#  - mkdir libs && cp mysql-connector-java-5.1.34/mysql-connector-java-5.1.34-bin.jar libs
   - chmod +x gradlew
 #  - ./gradlew build jacocoTestReport assembleAndroidTest
   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI

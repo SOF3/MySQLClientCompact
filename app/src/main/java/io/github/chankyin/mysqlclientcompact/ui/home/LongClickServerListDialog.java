@@ -21,7 +21,7 @@ public class LongClickServerListDialog extends DialogFragment{
 		HomeActivity activity = (HomeActivity) getActivity();
 		ServerObject server = activity.getServers().get(serverId);
 		return new AlertDialog.Builder(getActivity())
-				.setTitle(server.getServerName())
+				.setTitle(getResources().getString(R.string.Home_Menu_Actions_Title, server.getServerName()))
 				.setItems(R.array.Home_Menu_Actions, new DialogInterface.OnClickListener(){
 					@Override
 					public void onClick(DialogInterface dialog, int which){

@@ -18,6 +18,7 @@ import io.github.chankyin.mysqlclientcompact.task.ConfirmHostnameAsyncTask;
 
 public class AddServerDialogFragment extends DialogFragment{
 	public final static String ARG_EDIT_SERVER_ID = "editId";
+
 	private int serverId;
 	private boolean isEdit;
 
@@ -25,7 +26,7 @@ public class AddServerDialogFragment extends DialogFragment{
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState){
 		Bundle args = getArguments();
-		serverId = args.getInt(ARG_EDIT_SERVER_ID, -1);
+		serverId = args == null ? -1 : args.getInt(ARG_EDIT_SERVER_ID, -1);
 		isEdit = serverId != -1;
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		LayoutInflater inflater = getActivity().getLayoutInflater();

@@ -16,13 +16,15 @@
 	<style name="ServerStatus_Key">
 		<item name="android:gravity">center_vertical|right</item>
 		<item name="android:textStyle">bold</item>
-		<item name="android:paddingRight">2dp</item>
+		<item name="android:padding">3dp</item>
 		<item name="android:background">@drawable/table_cell_shape</item>
+		<item name="android:textSize">@dimen/status_text_size</item>
 	</style>
 	<style name="ServerStatus_Val">
 		<item name="android:layout_height">match_parent</item>
 		<item name="android:gravity">center_vertical|left</item>
-		<item name="android:paddingLeft">2dp</item>
+		<item name="android:padding">2dp</item>
 		<item name="android:background">@drawable/table_cell_shape</item>
+		<item name="android:textSize">@dimen/status_text_size</item>
 	</style>
 </resources>

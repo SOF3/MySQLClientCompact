@@ -5,7 +5,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.text.Editable;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import com.mysql.jdbc.ResultSetMetaData;
@@ -40,14 +39,10 @@ public class ProcessedQueryResult implements ProcessedResult{
 		header = new Row(Row.HEADER_ROW_ID, new Cell[data.getColumnCount()]);
 
 		for(int columnId = 1; columnId <= header.getContents().length; columnId++){
-			Log.d("MySQL query", String.format(
-					"Catalog: %s, Schema: %s, Table: %s",
-					data.getCatalogName(columnId), data.getSchemaName(columnId), data.getTableName(columnId)
-			));
 			String[] keys = thread.getPrimaryKeys(data.getCatalogName(columnId), data.getTableName(columnId));
 			String columnName = data.getColumnName(columnId);
 			int columnType = data.getColumnType(columnId);
-			Log.d("MySQL query", "Column: " + columnName + " (Type: " + columnType + ")");
+//			Log.d("MySQL query", "Column: " + columnName + " (Type: " + columnType + ")");
 			boolean isPrimaryKey = false;
 			for(String key : keys){
 				if(key.equals(columnName)){
