@@ -8,8 +8,8 @@ android {
         applicationId "io.github.chankyin.mysqlclientcompact"
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 3
-        versionName "1.1"
+        versionCode 4
+        versionName "1.2"
     }
     buildTypes {
         debug {
@@ -29,13 +29,14 @@ repositories {
 
 dependencies {
     provided 'org.projectlombok:lombok:1.12.6'
+    provided 'org.glassfish:javax.xml.stream:3.0.1'
     //noinspection GradlePath
 //    compile files('../libs/mysql-connector-java-5.1.34-bin.jar')
     compile 'commons-io:commons-io:2.5'
     compile 'mysql:mysql-connector-java:5.1.34'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.android.support:support-v4:24.0.0'
-    compile 'com.android.support:design:24.0.0'
+    compile 'com.android.support:appcompat-v7:24.1.1'
+    compile 'com.android.support:support-v4:24.1.1'
+    compile 'com.android.support:design:24.1.1'
 }
